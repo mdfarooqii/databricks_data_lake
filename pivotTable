@@ -1,0 +1,14 @@
+val rv = "risk_value"
+  rvDf.createOrReplaceTempView(rv)
+
+  val shock = "shock_set"
+  shockDF.createOrReplaceTempView(shock)
+
+
+  val rvDf1ShockDf = sparkSession.sql("select r.*, case when s.shock_id1 = r.shock_id1 then valueUsd end as shock_id1_value   , " +
+    "case when s.shock_id2 = r.shock_id1 then valueUsd end as shock_id2_value , " +
+    "case when s.shock_id3 = r.shock_id1 then valueUsd end as shock_id3_value  ," +
+    "case when s.shock_id4 = r.shock_id1 then valueUsd end as shock_id4_value  " +
+    "from risk_value r join shock_set s " +
+    "on s.sourceSystem = r.sourceSystem  and s.curveName = r.curveName and r.riskMeasureId = s.riskMeasureId ")
+  rvDf1ShockDf.show()
