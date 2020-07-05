@@ -12,3 +12,12 @@ val rv = "risk_value"
     "from risk_value r join shock_set s " +
     "on s.sourceSystem = r.sourceSystem  and s.curveName = r.curveName and r.riskMeasureId = s.riskMeasureId ")
   rvDf1ShockDf.show()
+
+val result = rvDf1ShockDf.select("sourceSystem","curveName","riskMeasureId", "shock_id1_value", "shock_id2_value" , "shock_id3_value", "shock_id4_value")
+    .groupBy("sourceSystem","curveName","riskMeasureId")
+    .agg(
+      sum("shock_id1_value").as("shock_id1_value"),
+      sum("shock_id2_value").as("shock_id2_value"),
+      sum("shock_id3_value").as("shock_id3_value"),
+      sum("shock_id4_value").as("shock_id4_value")
+    )
